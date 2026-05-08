@@ -1,8 +1,20 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { OpalRecord } from '../types';
-import { GRADE_COLORS, formatCur } from '../data';
-import { StatBox } from '../views';
+import { GRADE_COLORS, formatCur, getGradeTheme } from '../data';
+import { InfoTooltip } from './ui/InfoTooltip';
+
+const StatBox = ({ label, value, highlight = false, tooltip = "" }: { label: string, value: string, highlight?: boolean, tooltip?: string }) => (
+  <div className={`p-8 rounded-[48px] border transition-all duration-700 relative overflow-hidden flex flex-col justify-between h-40 group ${highlight ? 'bg-white text-black border-transparent shadow-2xl scale-[1.02]' : 'bg-white/[0.01] border-white/5 hover:border-white/10'}`}>
+     <div className="flex justify-between items-start">
+        <div className={`text-[11px] font-bold uppercase tracking-[0.5em] flex items-center gap-3 font-mono ${highlight ? 'text-black/40' : 'text-white/20'}`}>
+           <span className={`w-1.5 h-1.5 rounded-full ${highlight ? 'bg-black' : 'bg-[#00D1FF]'} animate-pulse`} /> {label}
+        </div>
+        {tooltip && <InfoTooltip content={tooltip} title={label} />}
+     </div>
+     <div className={`text-4xl font-display font-light tracking-[0.1em] ${highlight ? 'text-black' : 'text-white'}`}>{value}</div>
+  </div>
+);
 
 export function MarketplaceView({ data, onSelect }: { data: OpalRecord[], onSelect: (id: string | number) => void }) {
   const [gradeFilter, setGradeFilter] = useState('all');
@@ -33,81 +45,107 @@ export function MarketplaceView({ data, onSelect }: { data: OpalRecord[], onSele
   const totalCap = eligibleStones.reduce((sum, s) => sum + s.listPrice, 0);
 
   return (
-    <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} className="space-y-12">
-      <div className="flex justify-between items-end mb-8">
+    <motion.div initial={{opacity: 0, y: 15}} animate={{opacity: 1, y: 0}} transition={{ duration: 0.6 }} className="space-y-12">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 relative mb-8">
         <div>
-           <h2 className="text-4xl md:text-5xl font-display font-medium text-white tracking-tighter uppercase italic">The Floor</h2>
-           <p className="text-[11px] text-ash font-bold tracking-[0.3em] uppercase mt-2">Verified Asset Marketplace</p>
+           <h2 className="text-4xl md:text-5xl font-display font-light text-white tracking-[0.2em] uppercase">THE FLOOR</h2>
+           <p className="text-[9px] text-white/30 font-bold tracking-[0.4em] uppercase mt-4">DIGITAL ASSET PROTOCOL / MARKETPLACE</p>
         </div>
-        <div className="flex gap-2 bg-obsidian border border-white/5 p-1 rounded-xl">
+        <div className="flex gap-2 p-1 bg-white/[0.03] border border-white/5 rounded-full">
            {['all', 'm7+', 'm9'].map(f => (
-             <button key={f} onClick={() => setGradeFilter(f)} className={`px-6 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all ${gradeFilter === f ? 'bg-opal-gold text-obsidian shadow-lg' : 'text-ash hover:text-white'}`}>{f}</button>
+             <button 
+               key={f} 
+               onClick={() => setGradeFilter(f)} 
+               className={`px-8 py-2.5 text-[11px] font-bold uppercase tracking-[0.3em] rounded-full transition-all duration-700 ${gradeFilter === f ? 'bg-white text-black shadow-lg scale-105' : 'text-white/40 hover:text-white/60 hover:bg-white/5'}`}
+             >
+               {f.toUpperCase()}
+             </button>
            ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatBox label="Active Listings" value={eligibleStones.length.toString()} color="white" />
-        <StatBox label="Trade Volume" value={formatCur(totalCap)} color="opal-gold" />
-        <StatBox label="Avg Yield" value="28.4%" color="opal-green" />
-        <StatBox label="Nodes Synced" value="1,024" color="opal-blue" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <StatBox label="ACTIVE_NODES" value={eligibleStones.length.toString()} highlight={true} tooltip="Number of verified matrix nodes currently available for acquisition." />
+        <StatBox label="TRADE_VOLUME" value={formatCur(totalCap)} tooltip="Aggregate floor value of all eligible nodes within the current matrix." />
+        <StatBox label="ASSET_YIELD" value="28.4%" tooltip="Projected annual growth based on historical price divergence and rarity index." />
+        <StatBox label="NODE_STATUS" value="LIVE" tooltip="Current network connectivity and protocol synchronization status." />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-8">
-        {filtered.map(s => (
-          <div key={s.id} className="glass-panel overflow-hidden border border-white/10 hover:border-opal-gold/50 transition-all group flex flex-col relative rounded-[32px]">
-            <div className="h-64 overflow-hidden relative cursor-pointer" onClick={() => onSelect(s.id)}>
-              <img src={s.img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" />
-              <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-80"></div>
-              <div className="absolute top-6 right-6 w-12 h-12 rounded-xl flex items-center justify-center font-display font-bold text-[14px] shadow-2xl" style={{backgroundColor: GRADE_COLORS[s.mk_grade!], color: 'white'}}>M{s.mk_grade}</div>
-              {s.nft && <div className="absolute top-6 left-6 bg-opal-blue text-obsidian px-3 py-1 rounded-lg font-bold text-[10px] tracking-widest uppercase">NFT CERT</div>}
-            </div>
-            
-            <div className="p-8 flex-1 flex flex-col bg-white/[0.01]">
-              <h3 className="text-2xl font-display font-medium text-ivory tracking-tight mb-2 uppercase">{s.name}</h3>
-              <div className="text-[10px] text-ash font-bold tracking-widest mb-8 uppercase flex items-center gap-2">
-                 <span>{s.ct}ct Pure Fire</span>
-                 <span className="w-1 h-1 bg-opal-gold rounded-full"></span>
-                 <span>Andamooka SA</span>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 pt-16">
+        {filtered.map(s => {
+          const theme = getGradeTheme(s.mk_grade || 0);
+          return (
+            <div key={s.id} className="bg-white/[0.01] border border-white/5 hover:border-white/20 transition-all duration-700 group flex flex-col relative rounded-[48px] overflow-hidden p-3 hover:translate-y-[-4px]">
+              <div className="h-80 overflow-hidden relative cursor-pointer rounded-[40px]" onClick={() => onSelect(s.id)}>
+                <img src={s.img} className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 ease-[0.22, 1, 0.36, 1]" />
+                <div className="absolute inset-0 ceremony-scan opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#02050a] via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity"></div>
+                
+                <div className={`absolute top-8 right-8 px-6 py-2 rounded-full border backdrop-blur-md font-mono text-[11px] font-bold text-white tracking-[0.3em] shadow-2xl transition-all ${theme.border} ${theme.glow}`}>
+                   M{s.mk_grade}_NODE
+                </div>
+                
+                {s.nft && <div className="absolute bottom-8 left-8 bg-[#00D1FF] text-black px-5 py-2 rounded-full font-bold text-[9px] tracking-[0.3em] uppercase shadow-[0_0_30px_rgba(0,209,255,0.4)] transition-all group-hover:scale-105">CORELINKED</div>}
               </div>
               
-              <div className="mt-auto flex justify-between items-end">
-                <div>
-                  <div className="text-[10px] font-bold tracking-[0.2em] text-ash uppercase mb-1">List Value</div>
-                  <div className="text-3xl font-data font-medium text-opal-gold tracking-tighter">{formatCur(s.listPrice)}</div>
+              <div className="p-10 pb-12 flex-1 flex flex-col px-4">
+                <h3 className="text-3xl font-display font-light text-white tracking-[0.2em] mb-6 uppercase leading-tight">{s.name.split(' ')[0]} <span className="text-white/20">{s.name.split(' ').slice(1).join(' ')}</span></h3>
+                <div className="text-[11px] text-white/10 font-mono tracking-[0.5em] mb-12 uppercase flex items-center justify-between">
+                   <div className="flex items-center gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-[#00D1FF] transition-colors"></div>
+                      <span>{s.ct}CT_MASS</span>
+                      <InfoTooltip title="Carat Mass" content="Verified physical weight of the opal matrix." />
+                   </div>
+                   <div className="flex items-center gap-3">
+                      <span className="opacity-50">SYNC_</span>
+                      <span>V3.01</span>
+                   </div>
                 </div>
-                <button 
-                  disabled={s.isPurchased}
-                  onClick={() => setBuyModal(s as OpalRecord)}
-                  className="btn-magic btn-magic-white px-8 py-4 bg-white text-obsidian font-bold uppercase text-[12px] tracking-widest rounded-xl transition-all disabled:opacity-20 relative overflow-hidden transform active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
-                >
-                  <span className="relative z-10">{s.isPurchased ? 'OWNED' : 'BUY'}</span>
-                </button>
+                
+                <div className="mt-auto flex justify-between items-end bg-white/[0.03] border border-white/5 rounded-full p-2 pl-8">
+                  <div className="pb-1">
+                    <div className="flex items-center gap-3 mb-1">
+                      <div className="text-[10px] font-bold tracking-[0.4em] text-white/20 uppercase">VALUATION</div>
+                      <InfoTooltip title="Market Valuation" content="Estimated exchange value based on neural grade and scarcity protocols." />
+                    </div>
+                    <div className="text-[16px] font-display font-light text-[#00D1FF] tracking-[0.1em]">{formatCur(s.listPrice)}</div>
+                  </div>
+                  <button 
+                    disabled={s.isPurchased}
+                    onClick={() => setBuyModal(s as OpalRecord)}
+                    className="px-8 py-3 bg-white text-black font-bold uppercase text-[10px] tracking-[0.4em] rounded-full transition-all duration-700 disabled:opacity-0 hover:scale-[1.05] active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:bg-[#00D1FF] hover:text-black group-hover:shadow-[0_0_50px_rgba(0,209,255,0.2)]"
+                  >
+                    <span className="relative z-10">{s.isPurchased ? 'ACQUIRED' : 'INITIALIZE'}</span>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {buyModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-obsidian/90 backdrop-blur-xl">
-           <div className="glass-panel p-12 rounded-[40px] w-full max-w-lg text-center relative border-opal-blue/30 shadow-[0_0_50px_rgba(0,209,255,0.1)]">
-              <div className="w-32 h-32 rounded-3xl mx-auto mb-8 shadow-2xl overflow-hidden border-2 border-white/10">
-                 <img src={buyModal.img} className="w-full h-full object-cover" />
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-[#02050a]/95 backdrop-blur-3xl" onClick={() => setBuyModal(null)}>
+           <div 
+             className="bg-[#02050a] p-12 md:p-16 rounded-[48px] w-full max-w-xl text-center relative border border-white/5 shadow-[0_0_100px_rgba(0,0,0,0.8)]"
+             onClick={e => e.stopPropagation()}
+           >
+              <div className="w-40 h-40 rounded-[32px] mx-auto mb-10 shadow-2xl overflow-hidden border border-white/5 bg-black p-2">
+                 <img src={buyModal.img} className="w-full h-full object-cover grayscale opacity-60" />
               </div>
-              <h3 className="text-3xl font-display font-medium text-white uppercase tracking-tighter mb-4">Finalize Acquisition</h3>
-              <p className="text-ash text-sm mb-8 font-medium">You are about to secure ownership of this asset on the Polygon network.</p>
+              <h3 className="text-3xl font-display font-light text-white uppercase tracking-[0.2em] mb-4">FINALIZE PROTOCOL</h3>
+              <p className="text-white/30 text-[10px] tracking-[0.2em] font-medium uppercase mb-12">SECURE ASSET OWNERSHIP ON SOVEREIGN LEDGER</p>
               
-              <div className="bg-black/40 rounded-2xl p-6 mb-10 border border-white/5 space-y-4">
-                 <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-ash"><span>Asset Price</span><span className="text-white">{formatCur((buyModal as any).listPrice)}</span></div>
-                 <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-ash"><span>Network Fee</span><span className="text-opal-green">FREE (Promo)</span></div>
-                 <div className="flex justify-between pt-4 border-t border-white/5 text-xl font-data font-medium tracking-tighter text-opal-gold"><span>Total Due</span><span>{formatCur((buyModal as any).listPrice)}</span></div>
+              <div className="bg-white/[0.02] rounded-[24px] p-8 mb-12 border border-white/5 space-y-6">
+                 <div className="flex justify-between text-[9px] font-bold uppercase tracking-[0.3em] text-white/30"><span>ASSET PRICE</span><span className="text-white font-mono">{formatCur((buyModal as any).listPrice)}</span></div>
+                 <div className="flex justify-between text-[9px] font-bold uppercase tracking-[0.3em] text-white/30"><span>GAS TOKEN</span><span className="text-[#00D1FF] font-mono">0.000 / SPONSORED</span></div>
+                 <div className="flex justify-between pt-6 border-t border-white/5 text-2xl font-display font-light tracking-[0.1em] text-white"><span>TOTAL DUE</span><span>{formatCur((buyModal as any).listPrice)}</span></div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                 <button onClick={() => setBuyModal(null)} className="py-5 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold uppercase tracking-widest rounded-2xl transition-all">Cancel</button>
-                 <button onClick={() => { setPurchased([...purchased, buyModal.id.toString()]); setBuyModal(null); }} className="btn-magic btn-magic-white py-5 bg-white text-obsidian font-bold uppercase tracking-widest rounded-2xl shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all relative overflow-hidden transform hover:scale-105 active:scale-95">
-                    <span className="relative z-10">Confirm</span>
+                 <button onClick={() => setBuyModal(null)} className="py-5 bg-white/5 border border-white/10 hover:bg-white/10 text-white/50 text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-all">ABORT</button>
+                 <button onClick={() => { setPurchased([...purchased, buyModal.id.toString()]); setBuyModal(null); }} className="py-5 bg-white text-black text-[10px] font-bold uppercase tracking-[0.2em] rounded-full shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all hover:scale-105 active:scale-95">
+                    CONFIRM NODE
                  </button>
               </div>
            </div>

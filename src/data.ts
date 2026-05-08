@@ -1,16 +1,23 @@
 import { OpalRecord, RarityTier } from './types';
 
 export const GRADE_COLORS: Record<number, string> = {
-  1: '#5C2015', 2: '#7A3315', 3: '#9C481A', 4: '#B8621A',
-  5: '#C88C24', 6: '#96981E', 7: '#4EA832', 8: '#24A86C', 9: '#10C896'
+  1: '#1E293B', // Obsidian Mists
+  2: '#334155', // Slate Fog
+  3: '#00D1FF', // Electric Blue
+  4: '#00FF88', // Emerald Laser
+  5: '#FFD700', // Solar Gold
+  6: '#FF4D97', // Neon Pink
+  7: '#E84393', // Prismatic Fuchsia
+  8: '#6C5CE7', // Royal Indigo
+  9: '#FFFFFF'  // Pure Diamond
 };
 
 export const RARITY_TIERS: Record<string, RarityTier> = {
-  Zenith: { label: 'Zenith', color: '#10C896', minGrade: 9, xp: 1000, multi: 5.0 },
-  Legendary: { label: 'Legendary', color: '#4EA832', minGrade: 7, xp: 250, multi: 2.5 },
-  Epic: { label: 'Epic', color: '#B8621A', minGrade: 5, xp: 100, multi: 1.8 },
-  Rare: { label: 'Rare', color: '#9C481A', minGrade: 3, xp: 50, multi: 1.3 },
-  Common: { label: 'Common', color: '#5C2015', minGrade: 1, xp: 20, multi: 1.0 }
+  Zenith: { label: 'Zenith', color: '#FFFFFF', minGrade: 9, xp: 1000, multi: 5.0 },
+  Legendary: { label: 'Legendary', color: '#6C5CE7', minGrade: 7, xp: 250, multi: 2.5 },
+  Epic: { label: 'Epic', color: '#FFD700', minGrade: 5, xp: 100, multi: 1.8 },
+  Rare: { label: 'Rare', color: '#00D1FF', minGrade: 3, xp: 50, multi: 1.3 },
+  Common: { label: 'Common', color: '#334155', minGrade: 1, xp: 20, multi: 1.0 }
 };
 
 export const getRarity = (grade: number) => {
@@ -28,7 +35,7 @@ export const USERS = {
   },
   'mattr': {
     id: 'mattr', name: 'Matt Rogers', role: 'Cutter · Market Specialist',
-    color: '#2DD4BF', initials: 'MR', wallet: 'OPN-MR-HAHN-002', desc: 'Hahndorf · Lapidary Studio'
+    color: '#2DD4BF', initials: 'MR', wallet: 'OPN-MROG-002', desc: 'Hahndorf · Lapidary Studio'
   }
 };
 
@@ -45,10 +52,8 @@ export const SEEDS = [
   { id: 10, name: "Mid Grade Colour Concrete Treated", mk_ppg: 0.20, mk_ppc_cut: 0.75, mk_rough_total: 2.97, mk_cut_total: 55.61, mk_grade: 2, mr_offer: 0.30, mr_ppg_implied: 0.02, mr_grade: 1, wg: 14.83, ct: 74.15, brightness: "B4", bodyTone: "N5", pattern: "Flash", treatmentQuality: "Standard", stabilityRisk: "Medium", nft: false, img: "https://res.cloudinary.com/dkgqxred2/image/upload/v1777163112/MGC_s9ap7y.jpg" },
   { id: 11, name: "High Grade Hard Matrix Small", mk_ppg: 3.50, mk_ppc_cut: 45.00, mk_rough_total: 20.65, mk_cut_total: 1327.50, mk_grade: 7, mr_offer: 700.00, mr_ppg_implied: 118.64, mr_grade: 8, wg: 5.9, ct: 29.5, brightness: "B2", bodyTone: "N2", pattern: "Ribbon", treatmentQuality: "High", stabilityRisk: "Low", nft: false, img: "https://res.cloudinary.com/dkgqxred2/image/upload/v1777163116/IMG_4816_lzlryn.jpg" },
   { id: 12, name: "High Grade Hard Matrix Large", mk_ppg: 3.50, mk_ppc_cut: 45.00, mk_rough_total: 179.45, mk_cut_total: 11535.75, mk_grade: 7, mr_offer: 300.00, mr_ppg_implied: 5.85, mr_grade: 4, wg: 51.27, ct: 256.35, brightness: "B2", bodyTone: "N2", pattern: "Ribbon", treatmentQuality: "High", stabilityRisk: "Low", nft: false, img: "https://res.cloudinary.com/dkgqxred2/image/upload/v1777163110/IMG_4815_w0j9m6.jpg" },
-  { id: 13, name: "Highest Grade Gem Hard Matrix Treated", mk_ppg: 10.00, mk_ppc_cut: 100.00, mk_rough_total: 25.30, mk_cut_total: 1265.00, mk_grade: 9, mr_offer: 1200.00, mr_ppg_implied: 474.11, mr_grade: 9, wg: 2.53, ct: 12.65, brightness: "B1", bodyTone: "N1", pattern: "Harlequin", treatmentQuality: "High", stabilityRisk: "Low", nft: true, genesis: true, nft_img: "https://res.cloudinary.com/dkgqxred2/image/upload/v1777191838/openart-image_s4KRJWDf_1777191340348_raw_yssfes.png", img: "https://res.cloudinary.com/dkgqxred2/image/upload/v1777219429/IMG_4874_s5rxt7.png" },
-  { id: 14, name: "Sunset Horizon Matrix", mk_ppg: 1.50, mk_ppc_cut: 12.00, mk_rough_total: 45.00, mk_cut_total: 800.00, mk_grade: 6, mr_offer: 120.00, mr_ppg_implied: 4.00, mr_grade: 5, wg: 30, ct: 150, brightness: "B3", bodyTone: "N4", pattern: "Ribbon", treatmentQuality: "Standard", stabilityRisk: "Low", nft: false, img: "https://res.cloudinary.com/dkgqxred2/image/upload/v1777219429/IMG_4875_xo12hj.png" },
-  { id: 15, name: "Electric Blue Concrete", mk_ppg: 0.10, mk_ppc_cut: 0.50, mk_rough_total: 5.00, mk_cut_total: 100.00, mk_grade: 3, mr_offer: 2.00, mr_ppg_implied: 0.04, mr_grade: 2, wg: 50, ct: 250, brightness: "B5", bodyTone: "N6", pattern: "Pinfire", treatmentQuality: "Poor", stabilityRisk: "High", nft: false, img: "https://res.cloudinary.com/dkgqxred2/image/upload/v1777163115/LG1_lqks7p.jpg" },
-  { id: 16, name: "Galaxy Flare Matrix", mk_ppg: 4.50, mk_ppc_cut: 50.00, mk_rough_total: 90.00, mk_cut_total: 2500.00, mk_grade: 7, mr_offer: 350.00, mr_ppg_implied: 17.50, mr_grade: 6, wg: 20, ct: 100, brightness: "B2", bodyTone: "N3", pattern: "Flash", treatmentQuality: "High", stabilityRisk: "Low", nft: false, img: "https://res.cloudinary.com/dkgqxred2/image/upload/v1777219431/IMG_4873_y9oofg.png" }
+  { id: 13, name: "Highest Grade Gem Hard Matrix Treated", mk_ppg: 10.00, mk_rough_total: 25.30, mk_cut_total: 1265.00, mk_grade: 9, mr_offer: 1200.00, mr_ppg_implied: 474.11, mr_grade: 9, wg: 2.53, ct: 12.65, brightness: "B1", bodyTone: "N1", pattern: "Harlequin", treatmentQuality: "High", stabilityRisk: "Low", nft: false, img: "https://res.cloudinary.com/dkgqxred2/image/upload/v1777163110/IMG_4852_qtm7zi.jpg" }
+
 ];
 
 export const CUSTODIAN_ASSETS = [
@@ -149,4 +154,47 @@ export const formatNum = (v: any) => {
   const n = Number(v);
   if (isNaN(n)) return 'N/A';
   return n.toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits:1});
+};
+
+export const getGradeTheme = (grade: number) => {
+  if (grade >= 9) return { 
+    color: '#FFFFFF', 
+    border: 'border-white', 
+    bg: 'bg-white/20', 
+    text: 'text-white',
+    glow: 'shadow-[0_0_40px_rgba(255,255,255,0.4)]',
+    accent: '#00D1FF'
+  };
+  if (grade >= 7) return { 
+    color: '#6C5CE7', 
+    border: 'border-indigo-500', 
+    bg: 'bg-indigo-500/20', 
+    text: 'text-indigo-400',
+    glow: 'shadow-[0_0_25px_rgba(108,92,231,0.3)]',
+    accent: '#FF4D97'
+  };
+  if (grade >= 5) return { 
+    color: '#FFD700', 
+    border: 'border-yellow-500', 
+    bg: 'bg-yellow-500/20', 
+    text: 'text-yellow-400',
+    glow: 'shadow-[0_0_20px_rgba(255,215,0,0.3)]',
+    accent: '#00FF88'
+  };
+  if (grade >= 3) return { 
+    color: '#00D1FF', 
+    border: 'border-[#00D1FF]/30', 
+    bg: 'bg-[#00D1FF]/10', 
+    text: 'text-[#00D1FF]',
+    glow: 'shadow-[0_0_15px_rgba(0,209,255,0.2)]',
+    accent: '#00D1FF'
+  };
+  return { 
+    color: '#94a3b8', 
+    border: 'border-white/10', 
+    bg: 'bg-white/5', 
+    text: 'text-white/40',
+    glow: '',
+    accent: '#94a3b8'
+  };
 };

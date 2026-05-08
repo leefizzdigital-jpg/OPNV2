@@ -11,8 +11,8 @@ export function ClaimPortal({ records, onSelect }: { records: OpalRecord[], onSe
   return (
     <motion.div initial={{opacity: 0, y: 10}} animate={{opacity: 1, y: 0}} transition={{ duration: 0.4, ease: "easeOut" }} className="space-y-16">
       <header className="mb-12">
-        <h2 className="text-6xl md:text-7xl font-display font-medium text-white mb-4 tracking-tighter uppercase italic">The Vault</h2>
-        <p className="text-ash text-[12px] font-bold uppercase tracking-[0.3em]">Network Status: <span className="text-opal-green">Synchronized</span></p>
+        <h2 className="text-6xl md:text-7xl font-display font-medium text-white mb-4 tracking-tighter uppercase italic">The Parcel<span className="text-opal-blue">™</span></h2>
+        <p className="text-ash text-[12px] font-bold uppercase tracking-[0.3em]">Network Status: <span className="text-opal-green animate-pulse">Synchronized</span></p>
       </header>
 
       {/* NFTs Owned / Digital Twins (Top Section) */}
